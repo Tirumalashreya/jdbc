@@ -1,19 +1,50 @@
-That’s awesome! 🎉 Since your **Java RMI-based Cab Booking System** is now working, here’s a clean list of **all commands** you need to:
+Great job organizing your Java RMI-based Cab Booking System! 🚖 Here's an **enhanced and professional version of your `README.md`**, with:
 
-> 🔁 Compile
-> 🚀 Start the RMI registry
-> ✅ Run the RMI server
-> 💻 Run the client
-
----
-
-## ✅ FULL COMMAND LIST (UNIX/MacOS)
-
-> Replace `:` with `;` in the `-cp` if you're on **Windows**.
+* 📦 Complete folder and file structure
+* ⚙️ Setup & execution guide
+* 🛠️ Database queries
+* 📜 Shell scripts & permissions
+* 🛡️ Security policy reference
 
 ---
 
-### 🧱 1. Compile all Java files
+# 🚖 Cab Booking System (Java RMI + MySQL)
+
+This is a **Java RMI-based Cab Booking System** with a MySQL backend. It provides functionality for booking cabs, managing drivers, and viewing bookings via a GUI or CLI client.
+
+---
+
+## 📁 Project Structure
+
+```
+CabBookingSystem/
+├── lib/
+│   └── mysql-connector-j-8.0.33.jar         # MySQL JDBC Driver
+├── Server/
+│   ├── DBConnection.java                    # Handles DB connections
+│   ├── CabBookingInterface.java             # RMI Interface
+│   ├── CabBookingImpl.java                  # RMI Implementation
+│   ├── ServerMain.java                      # RMI Server Entry Point
+│   └── TestDB.java                          # (Optional) DB test class
+├── Client/
+│   ├── CabBookingClient.java                # CLI-based Client
+│   ├── CabBookingGUI.java                   # GUI-based Client
+├── schema.sql                               # SQL file to set up DB schema
+├── server.policy                            # Java Security Policy for RMI
+├── run_cab_book.sh                          # Shell script to run project
+├── setcp.sh                                 # Set classpath utility (optional)
+├── .gitignore                               # Git ignore rules
+```
+
+---
+
+## ✅ Full Setup & Command Guide (for Unix/macOS)
+
+> 🪟 Windows? Replace `:` with `;` in the `-cp` (classpath).
+
+---
+
+### 🔧 1. Compile All Java Files
 
 ```bash
 javac -cp .:lib/mysql-connector-j-8.0.33.jar Server/*.java Client/*.java
@@ -21,35 +52,33 @@ javac -cp .:lib/mysql-connector-j-8.0.33.jar Server/*.java Client/*.java
 
 ---
 
-### 🚦 2. Start the RMI Registry (in a **new terminal**)
+### 🛰️ 2. Start RMI Registry (in new terminal)
 
 ```bash
 rmiregistry 2001
 ```
 
-> Make sure you run this **from your project root folder**, and the port (2001) matches your code.
+> 🔐 Run it from the **project root folder** and ensure port matches the server.
 
 ---
 
-### 🖥️ 3. Run the RMI Server (in another terminal)
+### 🚀 3. Run the RMI Server
 
 ```bash
-java -cp .:lib/mysql-connector-j-8.0.33.jar Server.ServerMain
+java -cp .:lib/mysql-connector-j-8.0.33.jar -Djava.security.policy=server.policy Server.ServerMain
 ```
 
 ---
 
-### 👤 4. Run the Client
+### 💻 4. Run the Client
 
-If your `main()` method is in:
-
-#### 🔹 `CabBookingClient.java`:
+#### 📟 CLI Client:
 
 ```bash
 java -cp .:lib/mysql-connector-j-8.0.33.jar Client.CabBookingClient
 ```
 
-#### 🔹 `CabBookingGUI.java`:
+#### 🖥️ GUI Client:
 
 ```bash
 java -cp .:lib/mysql-connector-j-8.0.33.jar Client.CabBookingGUI
@@ -57,25 +86,7 @@ java -cp .:lib/mysql-connector-j-8.0.33.jar Client.CabBookingGUI
 
 ---
 
-### 🔧 5. (Optional) If Port 2001 is Busy
-
-To check what’s using it:
-
-```bash
-lsof -i :2001
-```
-
-To kill the process (replace `<PID>` with the process ID from above):
-
-```bash
-kill -9 <PID>
-```
-
----
-
-### ✅ Test DB Connection Separately (if needed)
-
-If you wrote a `TestDB` class inside `Server`:
+### 🧪 5. Test DB Connection (Optional)
 
 ```bash
 java -cp .:lib/mysql-connector-j-8.0.33.jar Server.TestDB
@@ -83,45 +94,64 @@ java -cp .:lib/mysql-connector-j-8.0.33.jar Server.TestDB
 
 ---
 
-### 🗃️ Recap Folder Structure
+## 🛢️ SQL Utilities
 
+### 📍 Check Available Cabs by Location
+
+```sql
+SELECT * FROM available_cabs_view WHERE location = 'Gachibowli';
 ```
-CabBookingSystem/
-├── lib/
-│   └── mysql-connector-j-8.0.33.jar
-├── Server/
-│   ├── DBConnection.java
-│   ├── CabBookingInterface.java
-│   ├── CabBookingImpl.java
-│   ├── ServerMain.java
-│   └── TestDB.java (optional)
-├── Client/
-│   ├── CabBookingClient.java
-│   ├── CabBookingGUI.java
+
+### 👤 Customer Booking History
+
+```sql
+SELECT * FROM booking_summary_view WHERE customer_name = 'Amit Sharma';
+```
+
+### 🚗 Driver Performance Ranking
+
+```sql
+SELECT * FROM driver_performance_view ORDER BY total_bookings DESC;
+```
+
+### 📦 All Active Bookings
+
+```sql
+SELECT * FROM booking_summary_view WHERE status IN ('CONFIRMED', 'IN_PROGRESS');
+```
+
+### 💰 Total Revenue Generated
+
+```sql
+SELECT SUM(fare) AS total_revenue FROM bookings WHERE status = 'COMPLETED';
 ```
 
 ---
 
-Let me know if you’d like a **single shell script** to automate all these commands!
-rmiregistry     
-java -cp .:lib/mysql-connector-j-8.0.33.jar Server.ServerMain
-java -cp .:lib/mysql-connector-j-8.0.33.jar Client.CabBookingClient
-ava -cp .:lib/mysql-connector-j-8.0.33.jar Client.CabBookingGUI
+## 🛡️ Java RMI Security Policy
 
-Check available cabs
--- SELECT * FROM available_cabs_view WHERE location = 'Gachibowli';
+Ensure your `server.policy` includes basic permissions:
 
--- Get booking history for a customer
--- SELECT * FROM booking_summary_view WHERE customer_name = 'Amit Sharma';
+```java
+grant {
+    permission java.security.AllPermission;
+};
+```
 
--- Check driver performance
--- SELECT * FROM driver_performance_view ORDER BY total_bookings DESC;
+---
 
--- Get all active bookings
--- SELECT * FROM booking_summary_view WHERE status IN ('CONFIRMED', 'IN_PROGRESS');
+## 📜 Shell Script Usage
 
--- Calculate total revenue
--- SELECT SUM(fare) as total_revenue FROM bookings WHERE status = 'COMPLETED';
-#
-//chmod +x run_cab_book.sh
-//./run_cab_book.sh
+### 🔄 Make Executable
+
+```bash
+chmod +x run_cab_book.sh
+```
+
+### ▶️ Run Script
+
+```bash
+./run_cab_book.sh
+```
+
+
