@@ -1,0 +1,12 @@
+# Ignore all compiled Java class files
+*.class
+
+# Ignore MacOS metadata
+.DS_Store
+
+# Optional: ignore shell script output or other junk files
+*.log
+
+# If you're using VS Code or IntelliJ, you can also add:
+.vscode/
+.idea/
